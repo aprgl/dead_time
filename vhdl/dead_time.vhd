@@ -8,6 +8,7 @@ use ieee.std_logic_1164.all;
 -- Generate dead time to avoid shoot through caused by high or low side being
 -- commanded on before power device has fully turned off.
 -- Version: 0.0.0 Initial Commit - haven't even tried to compile -Shaun
+-- Version: 0.0.1 Fixed github linter errors - still haven't compiled -Shaun
 ------------------------------------------------------------------------------
 
 entity dead_time is
@@ -73,6 +74,7 @@ begin
 					next_state <= state_standby;
 				else
 					next_state <= state_hold;
+				end if;
 
 			-- Ready to drive an output
 			when state_standby =>
@@ -84,6 +86,7 @@ begin
 					next_state <= state_h;
 				else
 					next_state <= state_standby;
+				end if;	
 
 			-- Low side is being commanded on and we are not in dead time
 			when state_l =>
@@ -93,6 +96,7 @@ begin
 					next_state <= state_l;
 				else
 					next_state <= state_reset;
+				end if;
 
 			-- High side is being commanded on and we are not in dead time
 			when state_h =>
@@ -102,6 +106,7 @@ begin
 					next_state <= state_h;
 				else
 					next_state <= state_reset;
+				end if;
 		end case;
 	end process state_machine;
 	
@@ -120,6 +125,7 @@ begin
             	dead_time_counter <= dead_time_counter + 1;
             else
             	dead_time_complete <= '1';
+        	end if;
         end if;
 
     end process dead_time_counter_proc;
